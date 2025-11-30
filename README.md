@@ -1,4 +1,4 @@
-# S.A.F.E.R. - Smart Automated Fire Extinguisher & Responder
+# S.A.F.E.R. - Smart Automated Fire Emergency Responder
 
 An Arduino-based fire suppression system that automatically detects and responds to fire and smoke threats using dual servo-controlled water dispensers.
 
@@ -165,6 +165,6 @@ Created by **Harry Canalita** for fire safety automation using PlatformIO and Ar
 
 **Copyright © 2025 Harry Canalita. All Rights Reserved.**
 
-This project is the intellectual property of Harry Canalita. The code, design, and documentation are intended exclusively for the **S.A.F.E.R. (Smart Automated Fire Extinguisher & Responder)** project submitted as a Final Project for **PHYSICS and STS** coursework.
+This project is the intellectual property of Harry Canalita. The code, design, and documentation are intended exclusively for the **S.A.F.E.R. (Smart Automated Fire Emergency Responder)** project submitted as a Final Project for **PHYSICS and STS** coursework.
 
 **Use Restrictions**: This work may not be used, copied, modified, or distributed without the express written permission of the owner, Harry Canalita.
