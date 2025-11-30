@@ -154,9 +154,8 @@ Smoke Value: 320 Status: Smoke Dectected!!!
 
 ## Known Issues & Considerations
 
-1. **LED IR Interference**: LED indicators (especially at night) can trigger the IR flame sensor. Currently disabled in code with comments.
-2. **Single Timer Conflict**: `servo2_Timer` is shared between flame and smoke responses. Combined threats use smoke response timing (50ms).
-3. **Flicker Threshold Tuning**: Current threshold (SD > 10) works for typical flames. May need adjustment for different environments.
+1. **LED IR Interference**: LED indicators (especially at night) can trigger the IR flame sensor. Tape the sides of the IR sensor to prevent this
+2. **Flicker Threshold Tuning**: Current threshold (SD > 10) works for typical flames. May need adjustment for different environments.
 
 ## Author
 
