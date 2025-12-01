@@ -36,11 +36,16 @@ void buzzerAlert(char type);
 //Global Variable
 int minAngle = 40;
 int maxAngle = 150;
+int flameLevel = 0;
+bool flameDetected = false;
+int smokeLevel = 0;
+bool smokeDetected = false;
 
 // Timer Variables;
 unsigned long servo1_Timer = 0;
 unsigned long servo2_Timer = 0;
 unsigned long debug_Timer = 0;
+unsigned long flameSensor_Timer = 0;
 
 // Servo state variables
 int servo1_currentAngle = 90;
@@ -72,7 +77,7 @@ void setup(){
 
   bootDisplay();
   blinkALL(2, 250);
-  //LedOn('B');
+  LedOn('B');
   delay(500);
 
   Serial.println("Set-up is complete and ready!!!");
@@ -86,22 +91,27 @@ void loop(){
   unsigned long now = millis();
 
   //Sensor Reading
-  int flameLevel= readFlameLevel();
-  bool flameDetected = isFlamePresent(flameLevel);
-  delay(50);  // Let ADC settle between different analog pins
-  int smokeLevel = readSmokeLevel();
-  bool smokeDetected = isSmokePresent(smokeLevel);
+
+  flameLevel = readFlameLevel();
+  flameDetected = isFlamePresent(flameLevel);
+
+  smokeLevel = readSmokeLevel();
+  smokeDetected = isSmokePresent(smokeLevel);
 
   if(timedAction(debug_Timer, 250, now)){
     printFlameStatus(flameDetected, flameLevel);
     printSmokeStatus(smokeLevel, smokeDetected);
   }
 
-  //detect flame & smoke (TODO: Add smoke detection later)
+  //detect flame & smoke
   if (!flameDetected && !smokeDetected){
-    if (timedAction(servo1_Timer, 30, now)){
+    while (timedAction(servo1_Timer, 100, now)){
       sweepServo(servo1, servo1_currentAngle, servo1_reachedMax, minAngle, maxAngle, 5);
+      flameLevel = readFlameLevel();
+      flameDetected = isFlamePresent(flameLevel);
     }
+
+    flameSensor_Timer = servo1_Timer;
 
     // Return to the middle before turning off the pump
     servo2.write(100);
@@ -179,8 +189,8 @@ bool calculateFlicker() {
   for (int i = 0; i < samples; i++) sum += readings[i];
   float mean = sum / samples;
 
-  //Compute variance
-  float varSum = 0;
+    //Compute variance
+    float varSum = 0;
   for (int i = 0; i < samples; i++) {
     float diff = readings[i] - mean;
     varSum += diff * diff;
@@ -246,9 +256,9 @@ void sweepServo(Servo &servo, int &currentAngle, bool &reachedMax, int minAngle,
 //===================
 void bootDisplay(){
   // Runs once at startup; blocking is acceptable here
-  //LedOn('O'); delay(250);
-  //LedOn('R'); delay(250);
-  //LedOn('B'); delay(250);
+  LedOn('O'); delay(250);
+  LedOn('R'); delay(250);
+  LedOn('B'); delay(250);
   LedOff('O'); LedOff('R'); LedOff('B');
   delay(250);
 }
@@ -267,7 +277,7 @@ void LedOff(char color){
 
 void blinkALL(int count, int interval){
   for(int i = 0; i < count; ++i){
-    //LedOn('B'); LedOn('R'); LedOn('O');
+    LedOn('B'); LedOn('R'); LedOn('O');
     delay(interval);
     LedOff('B'); LedOff('R'); LedOff('O');
     delay(interval);
